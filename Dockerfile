@@ -4,10 +4,14 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
     apt-get -y upgrade && \
-    apt-get -y -q install nginx
+    apt-get -y -q install nginx logrotate supervisor
+
+ADD conf/logrotate.conf /etc/logrotate.d/nginx
+ADD conf/supervisor.nginx.conf /etc/supervisor/conf.d/nginx.conf
+ADD conf/supervisor.cron.conf /etc/supervisor/conf.d/cron.conf
 
 EXPOSE 80
 
 VOLUME /var/log/nginx/
 
-ENTRYPOINT /usr/sbin/nginx -g "daemon off;"
+ENTRYPOINT [ "/usr/bin/supervisord" ]

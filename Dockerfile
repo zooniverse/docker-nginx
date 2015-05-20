@@ -2,7 +2,8 @@ FROM ubuntu:14.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && \
+RUN add-apt-repository ppa:nginx/stable && \
+    apt-get update && \
     apt-get -y upgrade && \
     apt-get -y -q install nginx logrotate supervisor
 

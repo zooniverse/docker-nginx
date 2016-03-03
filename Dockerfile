@@ -1,11 +1,10 @@
-FROM ubuntu:14.04
+FROM alpine:3.3
 
-RUN apt-get update && \
-    apt-get -y -q install nginx logrotate supervisor
+RUN apk add --no-cache nginx logrotate supervisor
 
 ADD conf/logrotate.conf /etc/logrotate.d/nginx
-ADD conf/supervisor.nginx.conf /etc/supervisor/conf.d/nginx.conf
-ADD conf/supervisor.cron.conf /etc/supervisor/conf.d/cron.conf
+ADD conf/supervisor.nginx.conf /etc/supervisor.d/nginx.ini
+ADD conf/supervisor.cron.conf /etc/supervisor.d/cron.ini
 
 EXPOSE 80
 

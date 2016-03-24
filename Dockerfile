@@ -10,6 +10,7 @@ RUN apt-get update && \
 ADD conf/logrotate.conf /etc/logrotate.d/nginx
 ADD conf/supervisor.nginx.conf /etc/supervisor/conf.d/nginx.conf
 ADD conf/supervisor.cron.conf /etc/supervisor/conf.d/cron.conf
+ADD conf/ssl.default.conf /etc/nginx/ssl.default.conf
 ADD entrypoint.sh /entrypoint.sh
 
 EXPOSE 80

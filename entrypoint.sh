@@ -24,7 +24,7 @@ else
             -n \
             -d ${CERTBOT_VHOST}
         ln -s /etc/letsencrypt/live/${$CERTBOT_VHOST}/privkey.pem /etc/nginx/ssl/key.pem
-        ln -s /etc/letsencrypt/live/${$CERTBOT_VHOST}/cert.pem /etc/nginx/ssl/cert.pem
+        ln -s /etc/letsencrypt/live/${$CERTBOT_VHOST}/fullchain.pem /etc/nginx/ssl/cert.pem
     fi
 fi
 

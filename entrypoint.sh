@@ -25,6 +25,8 @@ else
             -d ${CERTBOT_VHOST}
         ln -s /etc/letsencrypt/live/${$CERTBOT_VHOST}/privkey.pem /etc/nginx/ssl/key.pem
         ln -s /etc/letsencrypt/live/${$CERTBOT_VHOST}/fullchain.pem /etc/nginx/ssl/cert.pem
+    else
+        yes y | /usr/local/bin/certbot-auto renew
     fi
 fi
 

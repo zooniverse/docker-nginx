@@ -1,6 +1,12 @@
-#/bin/bash -e
+#/bin/bash -ex
 
 mkdir -p /etc/nginx/ssl/
+
+if [ "$LOG_STDOUT" = "true" ]
+then
+    ln -sfv /dev/stdout /var/log/nginx/access.log
+    ln -sfv /dev/stderr /var/log/nginx/error.log
+fi
 
 if [ -z "$CERTBOT_VHOST" ]
 then

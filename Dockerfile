@@ -1,28 +1,9 @@
-FROM ubuntu:14.04
+ARG VERSION
+FROM nginx:$VERSION
 
-RUN apt-get update && \
-    apt-get -y -q install \
-        nginx \
-        logrotate \
-        supervisor \
-        openssl \
-        curl \
-        && \
-    rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /etc/nginx-sites
+RUN echo "listen 80;" > /etc/nginx/listen.default.conf
+# This image doesn't actually configure SSL but the following symlink is for backwards compatibility
+RUN ln -s /etc/nginx/listen.default.conf /etc/nginx/ssl.default.conf
 
-RUN curl -o /usr/local/bin/certbot-auto https://dl.eff.org/certbot-auto && \
-    chmod +x /usr/local/bin/certbot-auto && \
-    yes y | /usr/local/bin/certbot-auto --os-packages-only && \
-    rm -rf /var/lib/apt/lists/*
-
-ADD conf/logrotate.conf /etc/logrotate.d/nginx
-ADD conf/supervisor.nginx.conf /etc/supervisor/conf.d/nginx.conf
-ADD conf/supervisor.cron.conf /etc/supervisor/conf.d/cron.conf
-ADD conf/ssl.default.conf /etc/nginx/ssl.default.conf
-ADD entrypoint.sh /entrypoint.sh
-
-EXPOSE 80
-
-VOLUME /var/log/nginx/
-
-ENTRYPOINT /entrypoint.sh
+COPY nginx.conf /etc/nginx/nginx.conf

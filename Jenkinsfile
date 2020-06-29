@@ -12,7 +12,7 @@ pipeline {
       agent any
       steps {
         script {
-          dev nginxVersion = '1.19'
+          def nginxVersion = '1.19'
           def dockerRepoName = 'zooniverse/nginx'
           def dockerImageName = "${dockerRepoName}:${nginxVersion}"
           def newImage = docker.build(dockerImageName, "--build-args VERSION=${nginxVersion}")

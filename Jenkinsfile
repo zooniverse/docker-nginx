@@ -15,7 +15,7 @@ pipeline {
           def nginxVersion = '1.19'
           def dockerRepoName = 'zooniverse/nginx'
           def dockerImageName = "${dockerRepoName}:${nginxVersion}"
-          def newImage = docker.build(dockerImageName, "--build-arg VERSION=${nginxVersion}")
+          def newImage = docker.build(dockerImageName, "--build-arg VERSION=${nginxVersion}", '.')
 
           if (BRANCH_NAME == 'master') {
             stage('Push image to registry') {

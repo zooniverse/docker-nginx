@@ -7,7 +7,7 @@ pipeline {
     disableConcurrentBuilds()
   }
 
-  triggers { cron('@hourly') }
+  triggers { cron('@weekly') }
 
   stages {
     stage('Build Docker image') {

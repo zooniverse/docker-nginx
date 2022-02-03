@@ -7,6 +7,8 @@ pipeline {
     disableConcurrentBuilds()
   }
 
+  triggers { cron('@hourly') }
+
   stages {
     stage('Build Docker image') {
       agent any

@@ -1,4 +1,7 @@
-ARG VERSION
+# This arg must be declared but should never be used.
+# Version is set via build arg in the build_image workflow.
+# If that version doesn't exist, the build should fail.
+ARG VERSION=invalid
 FROM nginx:$VERSION
 
 RUN mkdir -p /etc/nginx-sites

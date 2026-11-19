@@ -1,12 +1,22 @@
 name: Build Image
 
 on:
-  schedule:
-    - cron: '0 0 * * 0'
   workflow_dispatch:
+    inputs:
+      nginx_version:
+        description: 'nginx version to build and push'
+        required: false
+        # Update this value to change the default nginx version
+        default: '1.29'
+        type: string
+      latest:
+        description: 'Tag the image with latest?'
+        required: false
+        default: false
+        type: boolean
 
 env:
-  NGINX_VERSION: '1.29'
+  NGINX_VERSION: ${{ inputs.nginx_version }}
 
 jobs:
   build_and_push_image:
@@ -27,13 +37,21 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
+    - name: Create tags
+      id: create_tags
+      run: |
+        tag="ghcr.io/zooniverse/docker-nginx:${{ env.NGINX_VERSION }}"
+        if [ "${{ inputs.latest }}" = true ]; then tag="$tag,ghcr.io/zooniverse/docker-nginx:latest"; fi
+        echo $tag
+        echo "tag=$tag" >> $GITHUB_OUTPUT
+
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
         context: .
         file: Dockerfile
         push: true
-        tags: ghcr.io/zooniverse/docker-nginx:${{ env.NGINX_VERSION }},ghcr.io/zooniverse/docker-nginx:latest
+        tags: ${{ steps.create_tags.outputs.tag }}
         build-args: |
           VERSION=${{ env.NGINX_VERSION }}
         cache-from: type=gha
